@@ -5,8 +5,9 @@ export const fetchDataGet = createAsyncThunk(
 
   async function (action, { rejectWithValue }) {
     try {
-      const respons = await fetch(`${action}`);
-      const data = await respons.json();
+      const response = await fetch("http://localhost:3000/Data.json");
+      const data = await response.json();
+
       if (!data.ok) return data;
     } catch (error) {
       rejectWithValue(error.messege);
@@ -18,6 +19,7 @@ const todoSlice = createSlice({
   name: "todos",
   initialState: {
     list: [],
+    usersChoice: [],
     pending: false,
     disabledBtn: false,
   },
@@ -33,6 +35,7 @@ const todoSlice = createSlice({
       disabledBtn: true,
     }),
     [fetchDataGet.fulfilled]: (state, action) => {
+      console.log(action.payload, "actiion");
       return {
         ...state,
         pending: false,

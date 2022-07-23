@@ -1,8 +1,15 @@
 //import './App.css';
-import React from "react";
+import React, { useEffect } from "react";
+import { useDispatch } from "react-redux";
+import { fetchDataGet } from "./store/todoSlice";
 
 const App = () => {
-  return <div>start</div>;
+  const dispatch = useDispatch();
+  useEffect(() => {
+    dispatch(fetchDataGet());
+  }, []);
+
+  return <section></section>;
 };
 
 export default App;
