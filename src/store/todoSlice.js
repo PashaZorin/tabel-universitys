@@ -24,8 +24,13 @@ const todoSlice = createSlice({
     disabledBtn: false,
   },
   reducers: {
-    getTodos(state, action) {
-      state.todos.push(action.payload);
+    usersChoice(state, action) {
+      console.log(action.payload.country, "action.payload");
+      const res = state.list.filter(
+        (item) => item.country === action.payload.country
+      );
+      console.log(res, "res");
+      state.usersChoice = [...state.usersChoice, ...res];
     },
   },
   extraReducers: {
@@ -47,5 +52,5 @@ const todoSlice = createSlice({
       console.log(action.payload, "rejected"),
   },
 });
-export const { getTodos } = todoSlice.actions;
+export const { usersChoice } = todoSlice.actions;
 export default todoSlice.reducer;
