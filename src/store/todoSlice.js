@@ -25,12 +25,18 @@ const todoSlice = createSlice({
   },
   reducers: {
     usersChoice(state, action) {
-      console.log(action.payload.country, "action.payload");
       const res = state.list.filter(
         (item) => item.country === action.payload.country
       );
-      console.log(res, "res");
-      state.usersChoice = [...state.usersChoice, ...res];
+      state.usersChoice = [...res];
+    },
+    usersChecked(state, action) {
+      const res = state.usersChoice.filter((item) => {
+        if (item.id === action.payload) {
+          return (item.checked = !item.checked);
+        } else return item;
+      });
+      state.usersChoice = [...res];
     },
   },
   extraReducers: {
@@ -40,11 +46,13 @@ const todoSlice = createSlice({
       disabledBtn: true,
     }),
     [fetchDataGet.fulfilled]: (state, action) => {
-      console.log(action.payload, "actiion");
+      const res = action.payload.map((el, index) => {
+        return { ...el, checked: false, id: index };
+      });
       return {
         ...state,
         pending: false,
-        list: [...action.payload],
+        list: [...res],
         disabledBtn: false,
       };
     },
@@ -52,5 +60,5 @@ const todoSlice = createSlice({
       console.log(action.payload, "rejected"),
   },
 });
-export const { usersChoice } = todoSlice.actions;
+export const { usersChoice, usersChecked } = todoSlice.actions;
 export default todoSlice.reducer;

@@ -1,6 +1,6 @@
 //import './App.css';
 import React, { useEffect } from "react";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { fetchDataGet } from "./store/todoSlice";
 
 import FormSection from "./components/FormSection";
@@ -12,10 +12,12 @@ const App = () => {
     dispatch(fetchDataGet());
   }, []);
 
+  const table = useSelector((state) => state.todos.usersChoice);
+
   return (
     <section className="conteiner">
       <FormSection />
-      <TableSection />
+      {table.length > 0 && <TableSection />}
     </section>
   );
 };

@@ -1,10 +1,12 @@
 import React from "react";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import "../tableSection.scss";
+import CheckBox from "./CheckBox";
+import { usersChecked } from "../store/todoSlice";
 
 const TableSection = () => {
   const data = useSelector((state) => state.todos.usersChoice);
-  console.log(data, "data");
+  const dispatch = useDispatch();
   return (
     <div className="table">
       <ul className="table__header">
@@ -15,7 +17,7 @@ const TableSection = () => {
         <li className="table__header-item">name</li>
         <li className="table__header-item">state-province</li>
         <li className="table__header-item">web_pages</li>
-        <li className="table__header-item">доб</li>
+        <li className="table__header-item">choose</li>
       </ul>
       {data.map((item, index) => {
         return (
@@ -23,15 +25,25 @@ const TableSection = () => {
             <li className="table__content-item">{index}</li>
             <li className="table__content-item">{item.alpha_two_code}</li>
             <li className="table__content-item">{item.country}</li>
-            <li className="table__content-item">{item.domains}</li>
+            <li className="table__content-item">
+              {item.domains.map((item, index) => item)}
+            </li>
             <li className="table__content-item">{item.name}</li>
             <li className="table__content-item">{item["state-province"]}</li>
             <li className="table__content-item">
-              <a href={item.web_pages} target="blank">
-                {item.web_pages}
-              </a>
+              {item.web_pages.map((item, index) => (
+                <a key={index} href={item.web_pages} target="blank">
+                  {item}
+                </a>
+              ))}
             </li>
-            <li className="table__content-item">{item.доб}</li>
+            <li className="table__content-item">
+              <CheckBox
+                color="#376b8d"
+                checked={item.checked}
+                handleChange={() => dispatch(usersChecked(item.id))}
+              />
+            </li>
           </ul>
         );
       })}

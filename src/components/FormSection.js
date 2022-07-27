@@ -8,7 +8,6 @@ import { usersChoice } from "../store/todoSlice";
 const FormSection = () => {
   const dispatch = useDispatch();
   const onSubmit = (value, { resetForm }) => {
-    console.log(value, "value");
     dispatch(usersChoice(value));
     resetForm();
   };
@@ -28,7 +27,7 @@ const FormSection = () => {
       >
         <Form className="form">
           <h1 className="form__title">
-            Введитите название страни для поиска университела
+            Введитите название страни для поиска университета
           </h1>
 
           <FastField name="country">
