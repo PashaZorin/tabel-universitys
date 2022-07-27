@@ -4,11 +4,13 @@ import { TextField } from "@mui/material";
 import * as Yup from "yup";
 import Button from "./Button";
 import { useDispatch } from "react-redux";
-import { usersChoice } from "../store/todoSlice";
+import { usersChoice, togglePending } from "../store/todoSlice";
 const FormSection = () => {
   const dispatch = useDispatch();
   const onSubmit = (value, { resetForm }) => {
+    dispatch(togglePending(true));
     dispatch(usersChoice(value));
+    dispatch(togglePending(false));
     resetForm();
   };
   const validationSchema = Yup.object().shape({

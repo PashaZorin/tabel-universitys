@@ -26,10 +26,19 @@ const todoSlice = createSlice({
   reducers: {
     usersChoice(state, action) {
       const res = state.list.filter(
-        (item) => item.country === action.payload.country
+        (item) =>
+          item.country ===
+          action.payload.country
+            .split(/\s+/)
+            .map((word) => word[0].toUpperCase() + word.substring(1))
+            .join(" ")
       );
       state.usersChoice = [...res];
     },
+    togglePending(state, action) {
+      state.pending = !state.pending;
+    },
+
     usersChecked(state, action) {
       const res = state.usersChoice.filter((item) => {
         if (item.id === action.payload) {
@@ -56,9 +65,11 @@ const todoSlice = createSlice({
         disabledBtn: false,
       };
     },
-    [fetchDataGet.rejected]: (state, action) =>
-      console.log(action.payload, "rejected"),
+    [fetchDataGet.rejected]: (state, action) => {
+      console.log(action.payload, "rejected");
+      return { ...state, panding: false };
+    },
   },
 });
-export const { usersChoice, usersChecked } = todoSlice.actions;
+export const { usersChoice, usersChecked, togglePending } = todoSlice.actions;
 export default todoSlice.reducer;
