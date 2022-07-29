@@ -32,7 +32,7 @@ const TableSection = () => {
             <li className="table__content-item">{item["state-province"]}</li>
             <li className="table__content-item">
               {item.web_pages.map((item, index) => (
-                <a key={index} href={item.web_pages} target="blank">
+                <a key={index} href={item} target="blank">
                   {item}
                 </a>
               ))}
@@ -41,7 +41,7 @@ const TableSection = () => {
               <CheckBox
                 color="#376b8d"
                 checked={item.checked}
-                handleChange={() => dispatch(usersChecked(item.id))}
+                handleChange={() => dispatch(usersChecked(item))}
               />
             </li>
           </ul>

@@ -1,4 +1,5 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
+import { array } from "yup";
 
 export const fetchDataGet = createAsyncThunk(
   "todos/fetchDataGet",
@@ -40,8 +41,28 @@ const todoSlice = createSlice({
     },
 
     usersChecked(state, action) {
+      const localSt = JSON.parse(localStorage.getItem("usersChoice")) || [];
+      console.log(localSt, "localSt");
+      let newLocalSt = [];
+      if (localSt.length > 0) {
+        localSt.forEach((el) => {
+          if (el.id === action.payload.id) {
+            console.log(action.payload, "action.payload");
+            newLocalSt = localSt.filter(
+              (el) => el.name !== action.payload.name
+            );
+            localStorage.setItem(usersChoice, JSON.stringify(newLocalSt));
+          } else {
+            newLocalSt.push(action.payload);
+            localStorage.setItem("usersChoice", JSON.stringify(newLocalSt));
+          }
+        });
+      } else {
+        localStorage.setItem("usersChoice", JSON.stringify([action.payload]));
+      }
+
       const res = state.usersChoice.filter((item) => {
-        if (item.id === action.payload) {
+        if (item.id === action.payload.id) {
           return (item.checked = !item.checked);
         } else return item;
       });
@@ -62,6 +83,7 @@ const todoSlice = createSlice({
         ...state,
         pending: false,
         list: [...res],
+        usersChoice: JSON.parse(localStorage.getItem("usersChoice")),
         disabledBtn: false,
       };
     },
